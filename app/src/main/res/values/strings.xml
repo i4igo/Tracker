@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Tracker</string>
+
+    <string name="etLogin">login</string>
+    <string name="etPassword">password</string>
+    <string name="bLogin">Login</string>
+    <string name="bRegistration">Registration</string>
 </resources>
