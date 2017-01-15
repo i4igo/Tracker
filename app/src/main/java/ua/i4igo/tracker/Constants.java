@@ -6,6 +6,9 @@ package ua.i4igo.tracker;
 
 public interface Constants {
 
+    String KEY_LOGIN = "login";
+    String KEY_PASSWORD = "password";
+
     String KEY_NAME = "name";
     String KEY_LAST_NAME = "lName";
     String KEY_PHOTO = "photo";
