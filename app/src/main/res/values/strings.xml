@@ -5,4 +5,12 @@
     <string name="etPassword">password</string>
     <string name="bLogin">Login</string>
     <string name="bRegistration">Registration</string>
+
+    <string name="etRPhone">phone +380xx-xxx-xx-xx</string>
+    <string name="etRPassword">password</string>
+    <string name="etRConfirmPass">confirm password</string>
+    <string name="etRName">name</string>
+    <string name="etRLName">last name</string>
+    <string name="etREMail">eMail</string>
+    <string name="etRCity">city</string>
 </resources>
