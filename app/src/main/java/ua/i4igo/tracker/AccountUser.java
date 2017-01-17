@@ -28,11 +28,12 @@ public class AccountUser {
         this.city = city;
     }
 
+    // методы полученния данных обьекта AccountUser
     public String getName() {
         return name;
     }
 
-    public String getlName() {
+    public String getLName() {
         return lName;
     }
 
@@ -48,7 +49,7 @@ public class AccountUser {
         return phone;
     }
 
-    public String geteMail() {
+    public String getEMail() {
         return eMail;
     }
 
@@ -56,60 +57,43 @@ public class AccountUser {
         return city;
     }
 
-    /**
-     * сохраняем в preferences данные
-     *
-         preferences = getSharedPreferences(Constants.FILE_SAVE, MODE_PRIVATE);
-         SharedPreferences.Editor editor = preferences.edit()
-             .putString(Constants.KEY_USER_PHONE, etRPhone.getText().toString())
-             .putString(Constants.KEY_USER_PASSWORD, etRPassword.getText().toString())
-             .putString(Constants.KEY_USER_CONFIRM_PASSWORD, etRConfirmPass.getText().toString())
-             .putString(Constants.KEY_USER_NAME, etRName.getText().toString())
-             .putString(Constants.KEY_USER_LAST_NAME, etRLName.getText().toString())
-             .putString(Constants.KEY_USER_EMAIL, etREMail.getText().toString())
-             .putString(Constants.KEY_USER_CITY, etRCity.getText().toString())
-             .commit()
-
-     */
-    public void saveInPreferencesUser(String string) {
-
-    }
-
+    // методы сохранения данных в SharedPreferences
     public void saveName(String name) {
         this.name = name;
-        saveInPreferencesUser(name);
+        //saveInPreferencesUser(name);
+        preferences.edit().putString(Constants.KEY_USER_NAME, name).apply();
     }
 
-
-
-    public void savelName(String lName) {
+    public void saveLName(String lName) {
         this.lName = lName;
+        preferences.edit().putString(Constants.KEY_USER_LAST_NAME, lName).apply();
 
     }
 
     public void savePassword(String password) {
         this.password = password;
-
+        preferences.edit().putString(Constants.KEY_USER_PASSWORD, password).apply();
     }
 
     public void saveConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
-
+        preferences.edit().putString(Constants.KEY_USER_CONFIRM_PASSWORD, confirmPassword).apply();
     }
 
     public void savePhone(String phone) {
         this.phone = phone;
-
+        preferences.edit().putString(Constants.KEY_USER_PHONE, phone).apply();
     }
 
-    public void saveMail(String eMail) {
+    public void saveEMail(String eMail) {
         this.eMail = eMail;
-
+        preferences.edit().putString(Constants.KEY_USER_EMAIL, eMail).apply();
     }
 
     public void saveCity(String city) {
         this.city = city;
-
+        preferences.edit().putString(Constants.KEY_USER_CITY, city).apply();
     }
-
 }
+
+///data/data/имя_пакета/shared_prefs/имя_файла_настроек.xml.

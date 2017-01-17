@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ua.i4igo.tracker.RegistrationActivity">
+
+    <item
+        android:id="@+id/accept"
+        android:title=""
+        android:icon="@android:drawable/btn_dialog"
+        yourapp:showAsAction="always" />
+
+</menu>
+
+    <!--
+    https://www.youtube.com/watch?v=dAO3e6STS-c
+    http://www.fandroid.info/urok-14-menu-android-dobavlyaem-ikonki-i-chekboksy-programmno-dobavlyaem-i-skryvaem-punkty-menyu-android-studio/
+
+android:actionLayout="@layout/check_box_layout"
+yourapp:actionViewClass="android.widget.CheckBox"
+    http://stackoverflow.com/questions/33280354/how-to-add-checkboxes-in-android-app-toolbar
+
+
+http://androiddocs.ru/toolbar-alternativa-actionbar/
+    http://www.android4devs.com/2014/12/how-to-make-material-design-navigation-drawer.html
+    https://habrahabr.ru/post/256643/
+    https://developer.android.com/guide/topics/ui/menus.html?hl=ru
+    -->

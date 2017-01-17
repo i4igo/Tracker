@@ -7,6 +7,13 @@
     android:orientation="vertical"
     tools:context="ua.i4igo.tracker.RegistrationActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tbAccept"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+    </android.support.v7.widget.Toolbar>
+
     <!--
         добавить бар для подтвеждения введенных данных
         добавить фото
