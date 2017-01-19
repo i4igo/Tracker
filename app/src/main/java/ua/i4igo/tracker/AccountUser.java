@@ -1,5 +1,6 @@
 package ua.i4igo.tracker;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
@@ -18,14 +19,8 @@ public class AccountUser {
 
     private SharedPreferences preferences;
 
-    public AccountUser(String phone, String password, String confirmPassword, String name, String lName, String eMail, String city) {
-        this.phone = phone;
-        this.password = password;
-        this.confirmPassword = confirmPassword;
-        this.name = name;
-        this.lName = lName;
-        this.eMail = eMail;
-        this.city = city;
+    public AccountUser(Context context) {
+        this.preferences = context.getSharedPreferences(Constants.FILE_SAVE, Context.MODE_PRIVATE);
     }
 
     // методы полученния данных обьекта AccountUser
@@ -60,7 +55,6 @@ public class AccountUser {
     // методы сохранения данных в SharedPreferences
     public void saveName(String name) {
         this.name = name;
-        //saveInPreferencesUser(name);
         preferences.edit().putString(Constants.KEY_USER_NAME, name).apply();
     }
 

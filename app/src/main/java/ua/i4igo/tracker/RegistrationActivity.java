@@ -1,13 +1,17 @@
 package ua.i4igo.tracker;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etRPhone;
     private EditText etRPassword;
@@ -18,14 +22,22 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText etRCity;
     private Toolbar tbAccept;
 
+    String sPhone;
+    String sPassword;
+    String sConfirmPass;
+    String sName;
+    String sLName;
+    String sEMail;
+    String sCity;
+
+    private AccountUser user;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //return super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_activity_registration, menu);
         return true;
     }
-
-    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,24 +55,37 @@ public class RegistrationActivity extends AppCompatActivity {
         tbAccept = (Toolbar) findViewById(R.id.tbAccept);
         setSupportActionBar(tbAccept);
 
-        String sPhone = etRPhone.getText().toString();
-        String sPassword = etRPassword.getText().toString();
-        String sConfirmPass = etRConfirmPass.getText().toString();
-        String sName = etRName.getText().toString();
-        String sLName = etRLName.getText().toString();
-        String sEMail = etREMail.getText().toString();
-        String sCity = etRCity.getText().toString();
+        sPhone = etRPhone.getText().toString();
+        sPassword = etRPassword.getText().toString();
+        sConfirmPass = etRConfirmPass.getText().toString();
+        sName = etRName.getText().toString();
+        sLName = etRLName.getText().toString();
+        sEMail = etREMail.getText().toString();
+        sCity = etRCity.getText().toString();
 
         // при нажатии на кнопку "сохранить" создается объект AccountUser
         // в него передаются данные
+        AccountUser user = new AccountUser(this);
 
-        AccountUser user = new AccountUser(sPhone, sPassword, sConfirmPass, sName, sLName, sEMail, sCity);
-        user.savePhone(user.getPhone());
-        user.savePassword(user.getPassword());
-        user.saveConfirmPassword(user.getConfirmPassword());
-        user.saveName(user.getName());
-        user.saveLName(user.getLName());
-        user.saveEMail(user.getEMail());
-        user.saveCity(user.getCity());
+        user.savePhone(sPhone);
+        user.savePassword(sPassword);
+        user.saveConfirmPassword(sConfirmPass);
+        user.saveName(sName);
+        user.saveLName(sLName);
+        user.saveEMail(sEMail);
+        user.saveCity(sCity);
+    }
+
+    @Override
+    public void onClick(View v) {
+        user = new AccountUser(this);
+        Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
+        user.savePhone(sPhone);
+        user.savePassword(sPassword);
+        user.saveConfirmPassword(sConfirmPass);
+        user.saveName(sName);
+        user.saveLName(sLName);
+        user.saveEMail(sEMail);
+        user.saveCity(sCity);
     }
 }

@@ -7,9 +7,8 @@
     <item
         android:id="@+id/accept"
         android:title=""
-        android:icon="@android:drawable/btn_dialog"
+        android:icon="@android:drawable/checkbox_on_background"
         yourapp:showAsAction="always" />
-
 </menu>
 
     <!--

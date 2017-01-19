@@ -11,13 +11,16 @@
         android:id="@+id/tbAccept"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:onClick="onClick">
     </android.support.v7.widget.Toolbar>
 
-    <!--
-        добавить бар для подтвеждения введенных данных
-        добавить фото
-    -->
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#30a995" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
