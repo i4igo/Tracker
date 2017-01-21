@@ -1,8 +1,10 @@
 <resources>
+
     <string name="app_name">Tracker</string>
 
     <string name="etLogin">login</string>
     <string name="etPassword">password</string>
+
     <string name="bLogin">Login</string>
     <string name="bRegistration">Registration</string>
 
@@ -13,8 +15,10 @@
     <string name="etRLName">last name</string>
     <string name="etREMail">eMail</string>
     <string name="etRCity">city</string>
+    <string name="tvRNote">* - обязательные поля</string>
 
     <string name="title_activity_registration">Settings</string>
 
     <string name="title_activity_maps">Map</string>
+
 </resources>
