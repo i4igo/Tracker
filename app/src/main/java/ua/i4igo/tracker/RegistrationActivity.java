@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private Toolbar tbAccept;
+
     private EditText etRPhone;
     private EditText etRPassword;
     private EditText etRConfirmPass;
@@ -20,15 +22,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private EditText etRLName;
     private EditText etREMail;
     private EditText etRCity;
-    private Toolbar tbAccept;
 
-    String sPhone;
-    String sPassword;
-    String sConfirmPass;
-    String sName;
-    String sLName;
-    String sEMail;
-    String sCity;
+    private String sPhone;
+    private String sPassword;
+    private String sConfirmPass;
+    private String sName;
+    private String sLName;
+    private String sEMail;
+    private String sCity;
 
     private AccountUser user;
 
@@ -63,19 +64,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         sEMail = etREMail.getText().toString();
         sCity = etRCity.getText().toString();
 
-        // при нажатии на кнопку "сохранить" создается объект AccountUser
-        // в него передаются данные
-        AccountUser user = new AccountUser(this);
-
-        user.savePhone(sPhone);
-        user.savePassword(sPassword);
-        user.saveConfirmPassword(sConfirmPass);
-        user.saveName(sName);
-        user.saveLName(sLName);
-        user.saveEMail(sEMail);
-        user.saveCity(sCity);
     }
-
+    
+    // при нажатии на кнопку "сохранить" создается объект AccountUser
+    // в него передаются данные
     @Override
     public void onClick(View v) {
         user = new AccountUser(this);

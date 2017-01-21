@@ -20,7 +20,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
-        android:background="#30a995" />
+        android:background="#79a1ec" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -100,8 +100,9 @@
     </android.support.design.widget.TextInputLayout>
 
     <TextView
+        android:id="@+id/tvNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="* - обязательные поля"/>
+        android:text="@string/tvRNote"/>
 
 </LinearLayout>
