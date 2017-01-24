@@ -2,6 +2,8 @@ package ua.i4igo.tracker;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by Android on 12.01.2017.
@@ -21,6 +23,7 @@ public class AccountUser {
 
     public AccountUser(Context context) {
         this.preferences = context.getSharedPreferences(Constants.FILE_SAVE, Context.MODE_PRIVATE);
+
     }
 
     // методы полученния данных обьекта AccountUser

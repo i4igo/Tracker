@@ -3,9 +3,11 @@ package ua.i4igo.tracker;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -45,6 +47,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        tbAccept = (Toolbar) findViewById(R.id.tbAccept);
+        setSupportActionBar(tbAccept);
+
         etRPhone = (EditText) findViewById(R.id.etRPhone);
         etRPassword = (EditText) findViewById(R.id.etRPassword);
         etRConfirmPass = (EditText) findViewById(R.id.etRConfirmPass);
@@ -52,9 +57,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         etRLName = (EditText) findViewById(R.id.etRLName);
         etREMail = (EditText) findViewById(R.id.etREMail);
         etRCity = (EditText) findViewById(R.id.etRCity);
-
-        tbAccept = (Toolbar) findViewById(R.id.tbAccept);
-        setSupportActionBar(tbAccept);
+    }
+    
+    // при нажатии на кнопку "сохранить" создается объект AccountUser
+    // в него передаются данные
+    @Override
+    public void onClick(View v) {
 
         sPhone = etRPhone.getText().toString();
         sPassword = etRPassword.getText().toString();
@@ -64,14 +72,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         sEMail = etREMail.getText().toString();
         sCity = etRCity.getText().toString();
 
-    }
-    
-    // при нажатии на кнопку "сохранить" создается объект AccountUser
-    // в него передаются данные
-    @Override
-    public void onClick(View v) {
-        user = new AccountUser(this);
-        Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
+        user = new AccountUser(getApplicationContext());
         user.savePhone(sPhone);
         user.savePassword(sPassword);
         user.saveConfirmPassword(sConfirmPass);
@@ -79,5 +80,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         user.saveLName(sLName);
         user.saveEMail(sEMail);
         user.saveCity(sCity);
+
+        SharedPreferences preferences = getSharedPreferences(Constants.FILE_SAVE, MODE_PRIVATE);
+        String answer = preferences.getString(Constants.KEY_USER_PHONE, "");
+        Toast.makeText(this, answer, Toast.LENGTH_SHORT).show();
     }
 }
