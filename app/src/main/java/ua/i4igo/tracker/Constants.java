@@ -1,5 +1,7 @@
 package ua.i4igo.tracker;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by Android on 12.01.2017.
  */
@@ -20,4 +22,6 @@ public interface Constants {
     String KEY_USER_CITY = "city";
 
     String FILE_SAVE = "pref_user";
+
+    LatLng KYIV = new LatLng(50.4501, 30.5234);
 }
