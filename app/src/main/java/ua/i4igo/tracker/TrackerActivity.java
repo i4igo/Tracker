@@ -3,12 +3,14 @@ package ua.i4igo.tracker;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,6 +23,10 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
 
     private GoogleMap mMap;
     private LocationManager locationManager;
+    private LocationListener locationListener;
+    private double current_lat;
+    private double current_lng;
+    private LatLng currentLL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,30 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                currentStatusGPS(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000 * 5, 10, locationListener);
     }
 
     @Override
@@ -39,51 +69,55 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        //mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.setMyLocationEnabled(true);
 
-        // Add a marker in Sydney and move the camera
-        //mMap.addMarker(new MarkerOptions().position(Constants.KYIV).title("Marker in Kiev"));
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(50.45, 30.5235)));
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Constants.KYIV, 15));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Constants.KYIV, 12));
 
         // проверка GPS
         checkStatusGPS();
-        Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
 
-        Toast.makeText(this, "lat " + location.getLatitude(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "lng " + location.getLatitude(), Toast.LENGTH_SHORT).show();
+        current_lat = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLatitude();
+        current_lng = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLongitude();
 
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 15));
-
-
-        /*mMap.setMyLocationEnabled(true);
-        mMap.getMyLocation();*/
+        if (current_lat != locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLatitude()) {
+            mMap.addMarker(new MarkerOptions()
+                    .title("current position")
+                    .position(currentLL));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLL, 10));
+        }
 
         //mMap.animateCamera();
-
-        /*mMap.addCircle(new CircleOptions().center(new LatLng(50.444, 30.520)).radius(1.0).fillColor(R.color.colorPrimaryDark));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(kiev));*/
     }
 
     private void checkStatusGPS() {
         if (!locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-            Toast.makeText(this, "no", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(intent);
         }
+    }
+
+    private void currentStatusGPS(Location location) {
+        if (location != null){
+            //if (location.getLatitude() != current_lat) {
+                current_lat = location.getLatitude();
+                current_lng = location.getLongitude();
+                currentLL = new LatLng(location.getLatitude(), location.getLongitude());
+            }
+                /*Toast.makeText(this, "gps_null", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(this, "gps_ok:" + location.getLatitude() + ":" + location.getLongitude(), Toast.LENGTH_SHORT).show();*/
+
+
     }
 
 }
 
 /*
 * http://startandroid.ru/ru/uroki/vse-uroki-spiskom/291-urok-138-opredelenie-mestopolozhenija-gps-koordinaty.html
-* http://startandroid.ru/ru/uroki/vse-uroki-spiskom/306-urok-139-google-maps-sozdanie-i-nastrojka-proekta-karta-kamera-sobytija.html
-* http://startandroid.ru/ru/uroki/vse-uroki-spiskom/307-urok-140-google-maps-svoi-obekty-na-karte.html
 *
 * https://developers.google.com/android/reference/com/google/android/gms/maps/UiSettings
 * https://developers.google.com/maps/documentation/android-api/start?hl=ru
+* https://developer.android.com/training/location/retrieve-current.html
 *
 *
 * http://stackoverflow.com/questions/4721449/how-can-i-enable-or-disable-the-gps-programmatically-on-android
