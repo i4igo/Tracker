@@ -8,6 +8,8 @@ import android.location.LocationManager;
 import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -19,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+
 public class TrackerActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -28,11 +31,18 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
     private double current_lng;
     private LatLng currentLL;
 
+    private TextView tvBuilder;
+
+    StringBuilder sbGPS = new StringBuilder();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracker);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        tvBuilder = (TextView) findViewById(R.id.tvBuilder);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -42,7 +52,10 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                currentStatusGPS(location);
+
+                current_lat = location.getLatitude();
+                current_lng = location.getLongitude();
+                sbGPS.append(current_lat);
             }
 
             @Override
@@ -61,7 +74,8 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
             }
         };
 
-        locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000 * 5, 10, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                1000, 0.1f, locationListener);
     }
 
     @Override
@@ -73,13 +87,11 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Constants.KYIV, 12));
 
-        // проверка GPS
-        checkStatusGPS();
+        //checkStatusGPS();
 
-        current_lat = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLatitude();
-        current_lng = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLongitude();
-
-        if (current_lat != locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLatitude()) {
+        if (locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER) != null) {
+            current_lat = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLatitude();
+            current_lng = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLongitude();
             mMap.addMarker(new MarkerOptions()
                     .title("current position")
                     .position(currentLL));
@@ -87,6 +99,7 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         }
 
         //mMap.animateCamera();
+        tvBuilder.setText(sbGPS);
     }
 
     private void checkStatusGPS() {
@@ -97,19 +110,9 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     private void currentStatusGPS(Location location) {
-        if (location != null){
-            //if (location.getLatitude() != current_lat) {
-                current_lat = location.getLatitude();
-                current_lng = location.getLongitude();
-                currentLL = new LatLng(location.getLatitude(), location.getLongitude());
-            }
-                /*Toast.makeText(this, "gps_null", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(this, "gps_ok:" + location.getLatitude() + ":" + location.getLongitude(), Toast.LENGTH_SHORT).show();*/
-
-
+        currentLL = new LatLng(location.getLatitude(), location.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(currentLL));
     }
-
 }
 
 /*
