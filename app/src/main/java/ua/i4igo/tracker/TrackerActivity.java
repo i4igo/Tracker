@@ -12,7 +12,6 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -56,6 +55,11 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
                 current_lat = location.getLatitude();
                 current_lng = location.getLongitude();
                 sbGPS.append(current_lat);
+                if(mMap != null){
+                    mMap.addMarker(new MarkerOptions()
+                            .title("current position")
+                            .position(currentLL));
+                }
             }
 
             @Override
@@ -83,8 +87,8 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setMyLocationEnabled(true);
-
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        //mMap.setMyLocationEnabled(false);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Constants.KYIV, 12));
 
         //checkStatusGPS();
