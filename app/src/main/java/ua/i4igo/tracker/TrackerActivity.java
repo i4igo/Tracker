@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,7 +33,7 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
 
     private TextView tvBuilder;
 
-    StringBuilder sbGPS = new StringBuilder();
+    private StringBuilder sbGPS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,44 +41,40 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_tracker);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-        tvBuilder = (TextView) findViewById(R.id.tvBuilder);
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
+        checkStatusGPS();
+
+        // слушатель
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-
-                current_lat = location.getLatitude();
-                current_lng = location.getLongitude();
-                sbGPS.append(current_lat);
-                if(mMap != null){
-                    mMap.addMarker(new MarkerOptions()
-                            .title("current position")
-                            .position(currentLL));
-                }
+                currentLocationGPS(location);
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
+                // статус провайдера изменился
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-
+                // провайдер был включен юзером
+                // выводим последнее местоположение
+                currentLocationGPS(locationManager.getLastKnownLocation(provider));
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-
+                // провайдер был отключен юзером
             }
         };
 
+        // запрос на обновление местоположения
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000, 0.1f, locationListener);
     }
@@ -87,35 +84,33 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        //mMap.setMyLocationEnabled(false);
+        //mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        //mMap.setMyLocationEnabled(true);
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Constants.KYIV, 12));
-
-        //checkStatusGPS();
-
-        if (locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER) != null) {
-            current_lat = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLatitude();
-            current_lng = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLongitude();
-            mMap.addMarker(new MarkerOptions()
-                    .title("current position")
-                    .position(currentLL));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLL, 10));
-        }
-
-        //mMap.animateCamera();
-        tvBuilder.setText(sbGPS);
     }
 
+
+
+
+    // проверка статуса GPS телефона
     private void checkStatusGPS() {
         if (!locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)) {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
     }
 
-    private void currentStatusGPS(Location location) {
-        currentLL = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(currentLL));
+    // текущее положение
+    private void currentLocationGPS(Location location) {
+        if (location == null)
+            return;
+        current_lat = location.getLatitude();
+        current_lng = location.getLongitude();
+        if (mMap != null) {
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(current_lat, current_lng)));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(current_lat, current_lng)));
+        }
     }
 }
 
@@ -141,5 +136,18 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
                 .geodesic(true)
                 .color(Color.MAGENTA).width(5);
         mMap.addPolyline(polylineOptions);
-*
-* */
+
+
+
+        //checkStatusGPS();
+
+        /*if (locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER) != null) {
+            current_lat = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLatitude();
+            current_lng = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLongitude();
+            mMap.addMarker(new MarkerOptions()
+                    .title("current position")
+                    .position(currentLL));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLL, 10));
+        }*/
+
+//mMap.animateCamera();
