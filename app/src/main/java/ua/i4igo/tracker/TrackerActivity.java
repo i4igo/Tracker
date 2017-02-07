@@ -84,8 +84,8 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        //mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        //mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.setMyLocationEnabled(true);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Constants.KYIV, 12));
     }
@@ -107,8 +107,7 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         current_lat = location.getLatitude();
         current_lng = location.getLongitude();
         if (mMap != null) {
-            mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(current_lat, current_lng)));
+            location.getAccuracy();
             mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(current_lat, current_lng)));
         }
     }
