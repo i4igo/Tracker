@@ -34,6 +34,7 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
     private TextView tvBuilder;
 
     private StringBuilder sbGPS;
+    private PolylineOptions polylineOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
+
         checkStatusGPS();
 
         // слушатель
@@ -54,6 +56,7 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onLocationChanged(Location location) {
                 currentLocationGPS(location);
+                currentRoute(new LatLng(location.getLatitude(), location.getLongitude()));
             }
 
             @Override
@@ -77,6 +80,15 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         // запрос на обновление местоположения
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 1000, 0.1f, locationListener);
+
+        polylineOptions = new PolylineOptions();
+
+        // определяем местоположение
+        // нажимаем на кнопку "строить маршрут"
+        // создаем обьект с первоначальными координатами
+
+        // кнопка "остановить построение маршрута"
+        polylineOptions.add(new LatLng(current_lat, current_lng));
     }
 
     @Override
@@ -90,8 +102,15 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Constants.KYIV, 12));
     }
 
-
-
+    // отображение текущего маршрута
+    private void currentRoute(LatLng latLng) {
+        if (latLng != null) {
+            polylineOptions.add(latLng);
+            polylineOptions.geodesic(true);
+            polylineOptions.color(Color.MAGENTA).width(20);
+            mMap.addPolyline(polylineOptions);
+        }
+    }
 
     // проверка статуса GPS телефона
     private void checkStatusGPS() {
@@ -125,20 +144,6 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
 * http://www.enterra.ru/blog/gps-android/
 * https://habrahabr.ru/post/123397/
 *
-*
-* //рисуем линию
-        PolylineOptions polylineOptions = new PolylineOptions()
-                .add(new LatLng(50.45, 30.5230))
-                .add(new LatLng(50.47, 30.524))
-                .add(new LatLng(50.49, 30.525))
-                .add(new LatLng(50.5, 30.5255))
-                .geodesic(true)
-                .color(Color.MAGENTA).width(5);
-        mMap.addPolyline(polylineOptions);
-
-
-
-        //checkStatusGPS();
 
         /*if (locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER) != null) {
             current_lat = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER).getLatitude();
