@@ -9,6 +9,7 @@ import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
     private LatLng currentLL;
 
     private TextView tvBuilder;
+    private Button bStatusGPS;
 
     private StringBuilder sbGPS;
     private PolylineOptions polylineOptions;
@@ -41,6 +43,8 @@ public class TrackerActivity extends FragmentActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracker);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        bStatusGPS = (Button) findViewById(R.id.bStatusGPS);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
